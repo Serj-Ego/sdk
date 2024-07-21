@@ -2,7 +2,7 @@ import re
 
 from bs4 import BeautifulSoup
 
-with open("blank/index.html") as file:
+with open("lesson_01/blank/index.html") as file:
     src = file.read()
 # print(src)
 
