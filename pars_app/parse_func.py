@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
+from slugify import slugify
+# from datetime import datetime
 
-from settings import URL, HEADERS
+# from settings import URL, HEADERS
 
 
 def get_page(url: str, http_headers: dict) -> str:
@@ -50,6 +51,13 @@ def parse_main_page(page: str) -> list:
 
 
 def get_single_page(news_urls_list: list, http_headers: dict) -> str:
+    """
+    Генерирует содержимое страниц новостей по заданным URL.
+
+    :param news_urls_list: Список URL-адресов новостей.
+    :param http_headers: Заголовки HTTP-запросов.
+    :yield: HTML-код страницы новости.
+    """
     for news_url in news_urls_list[0:3]:  # TODO Срез на списке (для тестирования)
         yield get_page(news_url, http_headers)
 
@@ -72,11 +80,6 @@ def parse_single_page(page: str):  # TODO: Разработка
 
     soup = BeautifulSoup(page, 'lxml')  # TODO: prod экземпляр
 
-    # region content old  # TODO: Старый код
-    # article_grid_content = soup.find('div', class_='article-grid__content')
-    # main_article = article_grid_content.find('main', class_='article')
-    # endregion
-
     # Извлечение основного тега статьи
     main_article = soup.find('main', class_='article')
 
@@ -86,18 +89,13 @@ def parse_single_page(page: str):  # TODO: Разработка
     # Извлечение заголовкА статьи
     title = article_header.find('h1', class_='article__title')
     news_dict['title'] = title.text if title else None
-    # if title:  # Проверка наличия тега 'article__title'
-    #     news_dict['title'] = title.text
-    # else:
-    #     news_dict['title'] = None
 
     # Извлечение подзаголовка статьи
     subtitle = article_header.find('p', class_='article__subtitle')
     news_dict['subtitle'] = subtitle.text if subtitle else None
-    # if subtitle:  # Проверка наличия тега 'article__subtitle'
-    #     news_dict['subtitle'] = subtitle.text
-    # else:
-    #     news_dict['subtitle'] = None
+
+    # Преобразования заголовка в slug # TODO: slug dev
+    news_dict['slug'] = slugify(title.text) if title else None
 
     # Извлечение тела статьи
     paragraph_list = []
@@ -113,7 +111,7 @@ def parse_single_page(page: str):  # TODO: Разработка
     # Проверка количества элементов (параграфов) в списке
     if len(paragraph_list) > 1:
         body = '\n\n'.join(paragraph_list)
-        # print(body)  # TODO: print
+        # print(body)  # TODO: Print
         news_dict['body'] = body
     else:
         news_dict['body'] = paragraph_list[0]
@@ -121,10 +119,6 @@ def parse_single_page(page: str):  # TODO: Разработка
     # Извлечение изображения
     url_img = main_article.find('img', class_='article__picture-image')
     news_dict['url_img'] = url_img.get('src') if url_img else None
-    # if url_img:  # Проверка наличия тега 'article__picture-image'
-    #     news_dict['url_img'] = url_img.get('src')
-    # else:
-    #     news_dict['url_img'] = None
 
     # Извлечение видео
     # Тег содержащий информацию по видео контенту
@@ -141,7 +135,6 @@ def parse_single_page(page: str):  # TODO: Разработка
     article_meta = main_article.find('div', class_='article__meta')  # Тег метаданных
     if article_meta:
         article_time_str = article_meta.find('meta', itemprop='datePublished').get('content')
-        # article_datetime = datetime.strptime(article_time_str, '%Y-%m-%dT%H:%M:%S%z')  # TODO: dev var
         news_dict['datetime'] = article_time_str
     else:
         news_dict['datetime'] = None

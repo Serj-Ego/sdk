@@ -166,3 +166,6 @@ cython_debug/
 /lesson_03/news_data.json
 /lesson_03/news_database.db
 /pars_app/data_html/
+/pars_app/drafts/parse_func_old.py
+/pars_app/test_db.sqlite
+/pars_app/drafts/
