@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from slugify import slugify
+import time
+import random
 # from datetime import datetime
 
 # from settings import URL, HEADERS
@@ -59,6 +61,8 @@ def get_single_page(news_urls_list: list, http_headers: dict) -> str:
     :yield: HTML-код страницы новости.
     """
     for news_url in news_urls_list[0:3]:  # TODO Срез на списке (для тестирования)
+        # Задержка на случайное время (сайты не любят когда их парсят)
+        time.sleep(random.uniform(2, 8))
         yield get_page(news_url, http_headers)
 
 
