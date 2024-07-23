@@ -2,8 +2,9 @@ import sqlite3
 from sqlite3 import Error
 
 
-def add_or_update_article(db_file, slug, title, subtitle, body, url_img, url_video, datetime_str):
+def add_or_update_article(db_file, slug, title, subtitle, body, url_img, url_video, url_post, datetime_str):
     """
+    TODO Исправить документацию
     Добавляет или обновляет запись в таблице 'news_articles' базы данных SQLite.
 
     :param db_file: Путь к файлу базы данных SQLite.
@@ -23,18 +24,19 @@ def add_or_update_article(db_file, slug, title, subtitle, body, url_img, url_vid
 
         # SQL-запрос для вставки или обновления записи
         sql_insert_or_update = """
-        INSERT INTO news_articles (slug, title, subtitle, body, url_img, url_video, datetime)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO news_articles (slug, title, subtitle, body, url_img, url_video, url_post, datetime)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(slug, datetime) DO UPDATE SET
             title=excluded.title,
             subtitle=excluded.subtitle,
             body=excluded.body,
             url_img=excluded.url_img,
-            url_video=excluded.url_video;
+            url_video=excluded.url_video,
+            url_post=excluded.url_post;
         """
 
         # Выполнить SQL-запрос с передачей значений
-        cursor.execute(sql_insert_or_update, (slug, title, subtitle, body, url_img, url_video, datetime_str))
+        cursor.execute(sql_insert_or_update, (slug, title, subtitle, body, url_img, url_video, url_post, datetime_str))
 
         # Зафиксировать изменения
         conn.commit()

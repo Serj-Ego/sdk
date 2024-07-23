@@ -24,6 +24,7 @@ def create_table(conn):
             body TEXT,
             url_img URL,
             url_video URL,
+            url_post URL,
             datetime DATETIME,
             PRIMARY KEY (slug, datetime)
         );

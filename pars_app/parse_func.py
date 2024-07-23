@@ -8,7 +8,9 @@ import random
 # from settings import URL, HEADERS
 
 
-def get_page(url: str, http_headers: dict) -> str:
+def get_page(url: str, http_headers: dict) -> dict:
+
+    # TODO Исправить документацию
     """
     Выполняет HTTP GET запрос по указанному URL с заданными заголовками и возвращает содержимое ответа в виде текста.
 
@@ -16,18 +18,23 @@ def get_page(url: str, http_headers: dict) -> str:
     :param http_headers: Словарь HTTP заголовков для запроса.
     :return: Содержимое ответа в виде текста.
     """
+    dct = {}
     response = requests.get(url, headers=http_headers)
-    return response.text
+    dct = {'response': response, 'url': url}
+    return dct
 
 
-def parse_main_page(page: str) -> list:
+def parse_main_page(page_dict: dict) -> list:
     """
+    TODO Исправить документацию
     Парсит HTML-содержимое основной страницы новостей и извлекает ссылки на отдельные новости.
 
-    :param page: HTML-содержимое страницы в виде строки.
+    :param page_dict: TODO Дополнить описание
+    :param page: HTML-содержимое страницы в виде строки. TODO Удалить параметр
     :return: Список ссылок на новости. Возвращает пустой список в случае ошибки.
     """
     try:
+        page = page_dict['response'].text
         news_urls_list = []
 
         # Создание объекта BeautifulSoup с передачей аргументов (страница и модель парсера)
@@ -66,13 +73,16 @@ def get_single_page(news_urls_list: list, http_headers: dict) -> str:
         yield get_page(news_url, http_headers)
 
 
-def parse_single_page(page: str):  # TODO: Разработка
+def parse_single_page(page_dict: dict) -> dict:  # TODO: Разработка
     """
+    TODO Исправить документацию
     Парсит страницу новости и извлекает заголовок, подзаголовок, тело, изображение, видео и дату публикации.
 
-    :param page: Строка, содержащая HTML-код страницы новости.
+    :rtype: object
+    :param page: Строка, содержащая HTML-код страницы новости. TODO Удалить параметр
     :return: Словарь с данными новости, включая заголовок, подзаголовок, тело, изображение, видео и дату публикации.
     """
+    page = page_dict['response'].text
     news_dict = {}
 
     # TODO: ⇓ Тестовый регион кода
@@ -142,5 +152,8 @@ def parse_single_page(page: str):  # TODO: Разработка
         news_dict['datetime'] = article_time_str
     else:
         news_dict['datetime'] = None
+
+    # Извлечение ссылки на пост
+    news_dict['url_post'] = page_dict['url']
 
     return news_dict
