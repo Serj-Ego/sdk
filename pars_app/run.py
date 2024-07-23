@@ -3,6 +3,15 @@ import settings, dev_settings
 from parse_func import get_page, parse_main_page, get_single_page, parse_single_page
 # from dev_func import write_page_html, read_page_html  # TODO: dev function
 from add_or_update_db import add_or_update_article
+import create_db
+
+db_params = {
+    'db_name': 'pars_db',
+    'db_user': 'postgres',
+    'db_password': '123',
+    'db_host': 'localhost',
+    'db_port': '5432'
+}
 
 
 def get_articles():
@@ -24,7 +33,6 @@ def get_articles():
     for single_page in single_pages:
         article_dict = parse_single_page(single_page)
         add_or_update_article(
-            db_file=dev_settings.DB_DIR,
             slug=article_dict['slug'],
             title=article_dict['title'],
             subtitle=article_dict['subtitle'],
@@ -45,3 +53,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # get_articles()

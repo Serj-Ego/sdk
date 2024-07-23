@@ -3,13 +3,14 @@ from bs4 import BeautifulSoup
 from slugify import slugify
 import time
 import random
+
+
 # from datetime import datetime
 
 # from settings import URL, HEADERS
 
 
 def get_page(url: str, http_headers: dict) -> dict:
-
     # TODO Исправить документацию
     """
     Выполняет HTTP GET запрос по указанному URL с заданными заголовками и возвращает содержимое ответа в виде текста.
@@ -67,7 +68,7 @@ def get_single_page(news_urls_list: list, http_headers: dict) -> str:
     :param http_headers: Заголовки HTTP-запросов.
     :yield: HTML-код страницы новости.
     """
-    for news_url in news_urls_list[0:3]:  # TODO Срез на списке (для тестирования)
+    for news_url in news_urls_list:  # [0:3] TODO Срез на списке (для тестирования)
         # Задержка на случайное время (сайты не любят когда их парсят)
         time.sleep(random.uniform(2, 8))
         yield get_page(news_url, http_headers)
