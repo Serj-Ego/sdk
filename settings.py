@@ -6,6 +6,6 @@ HEADERS = {
                   "Chrome/126.0.0.0 Safari/537.36"
 }
 
-API_TOKEN = '7367789228:AAHstKgWcycgWicDLti1fGNsEBv9Tp6uE0I'
+API_TOKEN = '⇒ Твой токен тут ⇐'
 
 DATABASE = 'test_db.sqlite'

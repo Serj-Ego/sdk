@@ -4,8 +4,6 @@ from aiogram import types
 from aiogram.types import ParseMode, ReplyKeyboardMarkup, KeyboardButton
 from parse_app.db_func import get_latest_article
 from parse_app.db_func import search_articles_by_keyword
-
-# TODO
 from parse_app.db_func import get_latest_7_articles
 
 keyboard = ReplyKeyboardMarkup(resize_keyboard=True)

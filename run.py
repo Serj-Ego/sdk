@@ -22,12 +22,7 @@ dp = Dispatcher(bot)
 dp.register_message_handler(send_welcome, commands=['start'])
 dp.register_message_handler(send_help, commands=['help'])
 dp.register_message_handler(send_latest_article, commands=['latest'])
-
-
 dp.register_message_handler(send_latest_7_articles, commands=['latest7'])
-
-
-
 dp.register_message_handler(search_article, commands=['search'])
 dp.register_message_handler(handle_unknown_message)
 

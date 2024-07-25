@@ -4,10 +4,6 @@ from slugify import slugify
 import asyncio
 import random
 
-# TODO
-# from settings import URL, HEADERS
-# from db_func import add_or_update_article
-
 
 async def get_page(url: str, http_headers: dict) -> dict:
     """

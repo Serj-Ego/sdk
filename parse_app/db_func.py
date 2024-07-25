@@ -41,9 +41,7 @@ async def add_or_update_article(slug, title, subtitle, body, url_img, url_video,
 def get_latest_article():
     """
     Получает последнюю статью из базы данных по дате и времени.
-
-    Returns:
-        tuple: Кортеж с данными статьи или None, если статьи не найдены.
+    Returns: tuple: Кортеж с данными статьи или None, если статьи не найдены.
     """
     try:
         # Подключение к базе данных
@@ -59,6 +57,7 @@ def get_latest_article():
         """)
         # Извлечение одной записи из результата запроса
         article = cursor.fetchone()
+
         # Закрытие соединения с базой данных
         conn.close()
 
@@ -66,16 +65,15 @@ def get_latest_article():
 
     except sqlite3.Error as e:
         # Обработка ошибок работы с базой данных
-        print(f"Database error: {e}")
+        print(f"Ошибка БД: {e}")
         return None
+
     except Exception as e:
         # Обработка других ошибок
-        print(f"Error: {e}")
+        print(f"Ошибка: {e}")
         return None
 
 
-
-# TODO
 async def get_latest_7_articles() -> list:
     try:
         async with aiosqlite.connect(DATABASE) as db:
@@ -95,6 +93,25 @@ async def get_latest_7_articles() -> list:
 
 
 async def search_articles_by_keyword(keyword: str):
+    """
+        Функция поиска статей по ключевому слову в заголовке.
+
+        Эта асинхронная функция подключается к базе данных SQLite, выполняет запрос для поиска статей,
+        заголовок которых содержит указанное ключевое слово, и возвращает найденные статьи.
+
+        Аргументы: keyword (str): Ключевое слово для поиска в заголовках статей.
+
+        Возвращает: list: Список найденных статей,
+        где каждая статья представлена в виде кортежа значений
+        (slug, title, subtitle, body, url_img, url_video, url_post, datetime).
+
+        Обработка исключений:
+        В случае ошибки при работе с базой данных функция выведет сообщение об ошибке и вернет пустой список.
+
+        Примечание:
+        Для поиска используется функция slugify,
+        которая преобразует ключевое слово в URL-дружественный формат перед выполнением запроса.
+        """
     # Функция поиска статей по ключевому слову в заголовке
     try:
         async with aiosqlite.connect(DATABASE) as db:

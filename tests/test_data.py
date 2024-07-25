@@ -47,6 +47,7 @@ single_page_html = '''
 </html>
 '''
 
+
 def mocked_fetch_page(url, headers):
     # Mock function for aiohttp get requests
     return {'response': single_page_html, 'url': url}
